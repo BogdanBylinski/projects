@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { createAuthUserWithEmailAndPassword,createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
@@ -14,9 +14,6 @@ const defaultFormFields={
 const SignUpForm = ()=>{
     const [formFields, setFormFields]= useState(defaultFormFields)
     const {displayName, email, password, confirmPassword}= formFields;
-    console.log(formFields);
-
-
     const resetFormFields=()=>{
         setFormFields(defaultFormFields)
     }
@@ -33,10 +30,10 @@ const SignUpForm = ()=>{
             alert('password do not match')
             return;
         }
+        
         try{
             const {user} = await createAuthUserWithEmailAndPassword(email, password)
-
-            await createUserDocumentFromAuth(user, {displayName})
+            await createUserDocumentFromAuth(user, { displayName })
             resetFormFields();
 
 
@@ -44,6 +41,9 @@ const SignUpForm = ()=>{
         catch(error){
             if(error.code === 'auth/email-already-in-use'){
                 alert('Cannot create userm email already in use')
+            }
+            if(error.code === 'auth/weak-password'){
+                alert('Password should be at least 6 characters')
             }
             else{
 
