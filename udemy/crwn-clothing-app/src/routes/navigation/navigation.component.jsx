@@ -10,20 +10,20 @@ import "./navigation.styles.scss";
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
-  const {isCartOpen } = useContext(CartContext)
+  const {isCartOpen,setIsCartOpen} = useContext(CartContext)
 
   return (
     <>
       <div className="navigation">
-        <Link className="logo-container" to="/">
-          <CrwnLogo className="logo"></CrwnLogo>
+        <Link className="logo-container"   to="/">
+          <CrwnLogo className="logo" onClick={()=>setIsCartOpen(false)}></CrwnLogo>
         </Link>
         <div className="nav-links-container">
-          <Link className="nav-link" to="/shop">
+          <Link onClick={()=>setIsCartOpen(false)} className="nav-link" to="/shop">
             SHOP
-          </Link>
+          </Link >
           {currentUser ? (
-            <span className="nav-link" onClick={signOutUser}>
+            <span className="nav-link" onClick={()=>{signOutUser(); setIsCartOpen(false)}}>
               SIGN OUT
             </span>
           ) : (
