@@ -5,7 +5,6 @@ const  Home =()=> {
   return (
     <div>
     <Directory></Directory>
-    test
     </div>
   );
 }
