@@ -1,0 +1,214 @@
+body,
+body * {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+:root {
+  --cell-size:100px;
+  --mark-size:calc(var(--cell-size)* 1);
+  --main-color:rgb(111, 157, 159);
+  --border-color:rgb(211,184,145);
+  --x-color:rgb(240, 240, 240);
+  --circle-color:rgb(43, 96, 99);
+}
+
+@media (max-width: 375px) {
+  :root {
+    --cell-size:90px;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --cell-size:80px;
+  }
+}
+
+@media (max-width: 320px) {
+  :root {
+    --cell-size:60px;
+  }
+}
+
+.main_container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--main-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.main_container .main_container-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.main_container .main_container-top .title {
+  width: calc(var(--cell-size)* 4);
+  border-bottom: 2px dotted var(--border-color);
+  text-transform: uppercase;
+  color: var(--x-color);
+  text-align: center;
+  font-size: calc(var(--mark-size)* .5);
+  word-spacing: 10px;
+}
+
+.main_container .main_container-top .scores {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+  font-size: calc(var(--mark-size)* .5);
+}
+
+.main_container .main_container-top .scores .score, .main_container .main_container-top .scores span {
+  color: var(--x-color);
+}
+
+.main_container .main_container-bottom {
+  padding-top: 50px;
+}
+
+.main_container .main_container-bottom .board {
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -ms-grid-columns: (auto)[3];
+      grid-template-columns: repeat(3, auto);
+}
+
+.main_container .main_container-bottom .board .cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 2px solid var(--border-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: var(--mark-size);
+  text-transform: uppercase;
+  background-color: var(--main-color);
+  cursor: pointer;
+}
+
+.main_container .main_container-bottom .board .cell.x, .main_container .main_container-bottom .board .cell.circle {
+  cursor: not-allowed;
+}
+
+.main_container .main_container-bottom .board .cell:first-child, .main_container .main_container-bottom .board .cell:nth-child(2), .main_container .main_container-bottom .board .cell:nth-child(3) {
+  border-top: none;
+}
+
+.main_container .main_container-bottom .board .cell:nth-child(3n+1) {
+  border-left: none;
+}
+
+.main_container .main_container-bottom .board .cell:nth-child(3n+3) {
+  border-right: none;
+}
+
+.main_container .main_container-bottom .board .cell:last-child, .main_container .main_container-bottom .board .cell:nth-child(7), .main_container .main_container-bottom .board .cell:nth-child(8) {
+  border-bottom: none;
+}
+
+.main_container .main_container-bottom .board .cell:focus, .main_container .main_container-bottom .board .cell.focus {
+  outline: none;
+}
+
+.main_container .main_container-bottom .board .cell:visited {
+  outline: none;
+  border: none;
+}
+
+.x {
+  color: var(--x-color);
+}
+
+.circle {
+  color: var(--circle-color);
+}
+
+.nextMove {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.winning-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: var(--x-color);
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: var(--mark-size);
+}
+
+.winning-message.show {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.winning-message .restartButton {
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  padding: 20px 40px;
+  font-size: calc(var(--mark-size)* 0.5);
+}
+
+.winning-message .restartButton:hover {
+  background-color: var(--main-color);
+  color: var(--border-color);
+}
+/*# sourceMappingURL=styles.css.map */
