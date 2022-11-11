@@ -3,7 +3,6 @@ const score1 = document.querySelector("[data-score1]");
 const score2 = document.querySelector("[data-score2]");
 const winningMessage = document.getElementById("winningMessage");
 const restartButton = document.querySelector(".restartButton");
-let scoreFromLocalStorage;
 let currentUser = "x";
 let cellNum = 4;
 let prev;
@@ -19,11 +18,11 @@ const winningCombinations = [
 ];
 const controlls = [
   "Escape",
-  "Up",
   "a",
   "s",
   "d",
   "w",
+  "Up",
   "ArrowUp",
   "Down",
   "ArrowDown",
@@ -44,6 +43,7 @@ const userMark = {
 };
 gameStart();
 storage();
+
 
 function gameStart() {
   storage();
@@ -71,66 +71,7 @@ function gameStart() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (document.activeElement && controlls.includes(event.key)) {
-      cells[4].focus();
-      let nextCellNum;
-      switch (event.key) {
-        case "Up":
-        case "w":
-        case "ArrowUp":
-          if (cellNum <= 2) {
-            nextCellNum = cellNum + 9;
-            cellNum = cellNum + 9;
-          }
-          nextCellNum = cellNum - 3;
-          cellNum = cellNum - 3;
-          break;
-        case "Down":
-        case "s":
-        case "ArrowDown":
-          if (cellNum >= 6) {
-            nextCellNum = cellNum - 9;
-            cellNum = cellNum - 9;
-          }
-          nextCellNum = cellNum + 3;
-          cellNum = cellNum + 3;
-          break;
-        case "Left":
-        case "a":
-        case "ArrowLeft":
-          // if the current active cell is on the left edge
-          // we loop to the right edge in that row
-          nextCellNum = cellNum - 1;
-          prev = cellNum;
-          cellNum = cellNum - 1;
-          if (cellNum === -1) {
-            nextCellNum = 8;
-            cellNum = 8;
-          }
-
-          break;
-        case "Right":
-        case "d":
-        case "ArrowRight":
-          // if the current active cell is on the right edge
-          // we loop to the left edge in that row
-          nextCellNum = cellNum + 1;
-          prev = cellNum;
-          cellNum = cellNum + 1;
-          if (cellNum === 9) {
-            nextCellNum = 0;
-            cellNum = 0;
-          }
-
-          break;
-        case "Escape":
-          gameRestart();
-        default:
-          return;
-      }
-      cells[nextCellNum].focus();
-      cells[prev].blur();
-    }
+    switchFunction(event)
   });
   cells.forEach((cell) => {
     cell.addEventListener("focus", (e) => {
@@ -170,29 +111,56 @@ function gameRestart() {
     e.classList.remove("circle");
   });
 }
-function handleClick(e) {
-  if (e.target.classList.contains("choosen")) {
-    return;
-  }
-  setMark(e);
-  e.target.classList.remove("focus");
-  if (checkWinner(currentUser)) {
-    winningMessage.classList.add("show");
-    winningMessage.children[0].innerHTML = `${userMark[
-      currentUser
-    ].mark.toUpperCase()}'s wins`;
-    increment(currentUser);
-    storage();
-  }
-  switchTurn();
-}
-function checkWinner(e) {
+function checkWinner(className) {
   return winningCombinations.some((combination) => {
     return combination.every((index) => {
-      return cells[index].classList.contains(e);
+      return cells[index].classList.contains(className);
     });
+
   });
 }
+function checkDraw() {
+  return [...cells].every((cell) => {
+    return cell.classList.contains("choosen");
+  });
+}
+function handleClick(e) {
+    if (e.target.classList.contains("choosen")) {
+      return;
+    }
+    setMark(e);
+    if (checkDraw() === true) {
+      winningMessage.classList.add("show");
+      winningMessage.children[0].innerHTML = `Draw`;
+    }
+    if (checkWinner(currentUser)) {
+      winningMessage.classList.add("show");
+      winningMessage.children[0].innerHTML = `${userMark[
+        currentUser
+      ].mark.toUpperCase()}'s wins`;
+      increment(currentUser);
+      storage();
+      switchFunction('endGame')
+    }
+    e.target.classList.remove("focus");
+    switchTurn();
+  }
+function increment(currentUser) {
+    const obj = storage();
+    if (currentUser === "x") {
+      const temp = {
+        xScore: obj.xScore + 1,
+        oScore: obj.oScore,
+      };
+      localStorage.setItem("scores", JSON.stringify(temp));
+    } else {
+      const temp = {
+        xScore: obj.xScore,
+        oScore: obj.oScore + 1,
+      };
+      localStorage.setItem("scores", JSON.stringify(temp));
+    }
+  }
 function setMark(e) {
   const cell = e.target;
   cell.classList.add("choosen");
@@ -200,17 +168,8 @@ function setMark(e) {
   cell.classList.remove("nextMove");
   cell.innerHTML = userMark[currentUser].mark;
 }
-function switchTurn() {
-  if (currentUser === "x") {
-    currentUser = "circle";
-  } else {
-    currentUser = "x";
-  }
-}
-
 function storage() {
   const scores = JSON.parse(localStorage.getItem("scores"));
-  scoreFromLocalStorage = scores;
   if (scores) {
     score1.innerHTML = scores.xScore;
     score2.innerHTML = scores.oScore;
@@ -223,19 +182,77 @@ function storage() {
     localStorage.setItem("scores", JSON.stringify(newScores));
   }
 }
-function increment(currentUser) {
-  const obj = storage();
-  if (currentUser === "x") {
-    const temp = {
-      xScore: obj.xScore + 1,
-      oScore: obj.oScore,
-    };
-    localStorage.setItem("scores", JSON.stringify(temp));
-  } else {
-    const temp = {
-      xScore: obj.xScore,
-      oScore: obj.oScore + 1,
-    };
-    localStorage.setItem("scores", JSON.stringify(temp));
+function switchTurn() {
+    if (currentUser === "x") {
+      currentUser = "circle";
+    } else {
+      currentUser = "x";
+    }
   }
-}
+
+
+
+
+  function switchFunction (event){
+    if(winningMessage.classList.contains("show")){
+        if(event.key==="Escape"){
+            gameRestart()
+        }
+        return;
+    }
+    if (document.activeElement && controlls.includes(event.key)) {
+        cells[4].focus();
+        let nextCellNum;
+        switch (event.key) {
+          case "Up":
+          case "w":
+          case "ArrowUp":
+            if (cellNum <= 2) {
+              nextCellNum = cellNum + 9;
+              cellNum = cellNum + 9;
+            }
+            nextCellNum = cellNum - 3;
+            cellNum = cellNum - 3;
+            break;
+          case "Down":
+          case "s":
+          case "ArrowDown":
+            if (cellNum >= 6) {
+              nextCellNum = cellNum - 9;
+              cellNum = cellNum - 9;
+            }
+            nextCellNum = cellNum + 3;
+            cellNum = cellNum + 3;
+            break;
+          case "Left":
+          case "a":
+          case "ArrowLeft":
+            nextCellNum = cellNum - 1;
+            prev = cellNum;
+            cellNum = cellNum - 1;
+            if (cellNum === -1) {
+              nextCellNum = 8;
+              cellNum = 8;
+            }
+  
+            break;
+          case "Right":
+          case "d":
+          case "ArrowRight":
+            nextCellNum = cellNum + 1;
+            prev = cellNum;
+            cellNum = cellNum + 1;
+            if (cellNum === 9) {
+              nextCellNum = 0;
+              cellNum = 0;
+            }
+            break;
+          case "Escape":
+            gameRestart();
+          default:
+            return;
+        }
+        cells[nextCellNum].focus();
+        cells[prev].blur();
+      }
+  }

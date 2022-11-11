@@ -5,37 +5,44 @@ body * {
   vertical-align: top;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 :root {
-  --cell-size:100px;
-  --mark-size:calc(var(--cell-size)* 1);
-  --main-color:rgb(111, 157, 159);
-  --border-color:rgb(211,184,145);
-  --x-color:rgb(240, 240, 240);
-  --circle-color:rgb(43, 96, 99);
+  --cell-size: 100px;
+  --mark-size: calc(var(--cell-size) * 1);
+  --main-color: rgb(111, 157, 159);
+  --border-color: rgb(211, 184, 145);
+  --x-color: rgb(240, 240, 240);
+  --circle-color: rgb(43, 96, 99);
+}
+
+@media (max-width: 400px) {
+  :root {
+    --cell-size: 90px;
+  }
 }
 
 @media (max-width: 375px) {
   :root {
-    --cell-size:90px;
+    --cell-size: 80px;
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 350px) {
   :root {
-    --cell-size:80px;
+    --cell-size: 75px;
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 325px) {
   :root {
-    --cell-size:60px;
+    --cell-size: 70px;
   }
 }
 
 .main_container {
+  padding-top: calc(var(--cell-size) / 3);
   width: 100vw;
   height: 100vh;
   background-color: var(--main-color);
@@ -68,13 +75,14 @@ body * {
 }
 
 .main_container .main_container-top .title {
-  width: calc(var(--cell-size)* 4);
+  width: calc(var(--cell-size) * 4);
   border-bottom: 2px dotted var(--border-color);
   text-transform: uppercase;
   color: var(--x-color);
   text-align: center;
-  font-size: calc(var(--mark-size)* .5);
+  font-size: calc(var(--mark-size) * 0.5);
   word-spacing: 10px;
+  margin-bottom: calc(var(--mark-size) * 0.2);
 }
 
 .main_container .main_container-top .scores {
@@ -89,10 +97,11 @@ body * {
       -ms-flex-align: center;
           align-items: center;
   gap: 20px;
-  font-size: calc(var(--mark-size)* .5);
+  font-size: calc(var(--mark-size) * 0.5);
 }
 
-.main_container .main_container-top .scores .score, .main_container .main_container-top .scores span {
+.main_container .main_container-top .scores .score,
+.main_container .main_container-top .scores span {
   color: var(--x-color);
 }
 
@@ -139,11 +148,11 @@ body * {
   border-top: none;
 }
 
-.main_container .main_container-bottom .board .cell:nth-child(3n+1) {
+.main_container .main_container-bottom .board .cell:nth-child(3n + 1) {
   border-left: none;
 }
 
-.main_container .main_container-bottom .board .cell:nth-child(3n+3) {
+.main_container .main_container-bottom .board .cell:nth-child(3n + 3) {
   border-right: none;
 }
 
@@ -169,7 +178,7 @@ body * {
 }
 
 .nextMove {
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .winning-message {
@@ -178,7 +187,7 @@ body * {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   display: none;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -203,12 +212,14 @@ body * {
 .winning-message .restartButton {
   border: 2px solid var(--border-color);
   cursor: pointer;
+  background-color: var(--main-color);
   padding: 20px 40px;
-  font-size: calc(var(--mark-size)* 0.5);
+  font-size: calc(var(--mark-size) * 0.5);
+  color: var(--border-color);
 }
 
 .winning-message .restartButton:hover {
-  background-color: var(--main-color);
+  background-color: var(--circle-color);
   color: var(--border-color);
 }
 /*# sourceMappingURL=styles.css.map */
