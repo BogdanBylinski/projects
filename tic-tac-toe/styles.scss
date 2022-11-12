@@ -157,3 +157,26 @@ body * {
     }
   }
 }
+@media  (min-width: 320px) and (max-width: 1000px) and (orientation: landscape) {
+  .main_container{
+    padding-top: calc(var(--cell-size) / 5);
+  .main_container-top{
+    flex-direction: row;
+    border-bottom: 2px dotted var(--border-color);
+    margin-bottom: calc(var(--mark-size) * 0.1);
+    .title {
+      width: calc(var(--cell-size) * 2);
+      font-size: calc(var(--mark-size) * 0.2);
+      border: none;
+      margin-bottom: 0;
+  }
+    .scores{
+      font-size: calc(var(--mark-size) * 0.2);
+    }
+}
+.main_container-bottom{
+
+  padding-top: 0;
+}
+}
+}

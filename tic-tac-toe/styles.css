@@ -222,4 +222,30 @@ body * {
   background-color: var(--circle-color);
   color: var(--border-color);
 }
+
+@media (min-width: 320px) and (max-width: 1000px) and (orientation: landscape) {
+  .main_container {
+    padding-top: calc(var(--cell-size) / 5);
+  }
+  .main_container .main_container-top {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    border-bottom: 2px dotted var(--border-color);
+    margin-bottom: calc(var(--mark-size) * 0.1);
+  }
+  .main_container .main_container-top .title {
+    width: calc(var(--cell-size) * 2);
+    font-size: calc(var(--mark-size) * 0.2);
+    border: none;
+    margin-bottom: 0;
+  }
+  .main_container .main_container-top .scores {
+    font-size: calc(var(--mark-size) * 0.2);
+  }
+  .main_container .main_container-bottom {
+    padding-top: 0;
+  }
+}
 /*# sourceMappingURL=styles.css.map */
