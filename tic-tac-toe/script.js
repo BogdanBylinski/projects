@@ -199,7 +199,7 @@ function switchTurn() {
         if(event.key==="Escape" || event.key === 'Enter' || event.code=== 'Space'){
           setTimeout(() => {
             gameRestart()
-          }, 100);
+          }, 300);
         }
         return;
     }
