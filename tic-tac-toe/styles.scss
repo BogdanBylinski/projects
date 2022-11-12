@@ -157,7 +157,7 @@ body * {
     }
   }
 }
-@media  (min-width: 320px) and (max-width: 1000px) and (orientation: landscape) {
+@media  (min-width: 320px) and (max-width: 1000px) and (orientation: landscape) and (max-height: 600px) {
   .main_container{
     padding-top: calc(var(--cell-size) / 5);
   .main_container-top{
