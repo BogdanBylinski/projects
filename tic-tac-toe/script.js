@@ -194,9 +194,12 @@ function switchTurn() {
 
 
   function switchFunction (event){
+    console.log(event);
     if(winningMessage.classList.contains("show")){
-        if(event.key==="Escape"){
+        if(event.key==="Escape" || event.key === 'Enter' || event.code=== 'Space'){
+          setTimeout(() => {
             gameRestart()
+          }, 100);
         }
         return;
     }
