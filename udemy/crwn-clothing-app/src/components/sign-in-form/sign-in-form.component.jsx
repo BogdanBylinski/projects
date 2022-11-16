@@ -1,15 +1,25 @@
 /* eslint-disable no-unused-vars */
 import { useState} from "react";
-import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { emailSignInStart, googleSignInStart } from "../../store/user/user.action";
+import { selectCurrentUser } from "../../store/user/user.selector";
+// import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-in.styles.scss'
+
+
+
 
 const defaultFormFields={
     email:'',
     password:'',
 }
 const SignInForm = ()=>{
+    const currentUser = useSelector((selectCurrentUser));
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [formFields, setFormFields]= useState(defaultFormFields)
     const { email, password, }= formFields;
 
@@ -27,7 +37,7 @@ const SignInForm = ()=>{
 
         
         try{
-            const {user} = await signInAuthUserWithEmailAndPassword(email, password);
+            dispatch(emailSignInStart(email, password))
             resetFormFields();
 
 
@@ -49,9 +59,15 @@ const SignInForm = ()=>{
  
     }
     const signIngWithGoogle = async () =>{
-     await signInWithGooglePopup();
+
+
+        
+
+     dispatch(googleSignInStart())
     }
-   
+    if(currentUser){
+        navigate('/shop')
+    }
     return (
         <div className="sign-up-container">
             <h2>Already have an anccount?</h2>
