@@ -1,6 +1,7 @@
 // import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
+import PaymentForm from '../../components/payment-form/payment.component';
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selector';
 // import { CartContext } from '../../contexts/cart.context';
 import './checkout.styles.scss';
@@ -41,6 +42,7 @@ const Checkout = () =>{
                     )
                 }
                 <span className='total'>Total: ${cartTotal} </span>
+                <PaymentForm></PaymentForm>
         </div>
     )
 }
