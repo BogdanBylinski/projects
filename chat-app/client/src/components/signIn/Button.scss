@@ -1,0 +1,41 @@
+@use "../../variables/vars" as v;
+
+.button {
+  letter-spacing: 2px;
+  width: 40%;
+  padding: 10px 20px;
+  border: 0.1px solid v.$theme-light;
+  border-radius: 5px;
+  margin: auto 0px;
+  height: 50px;
+  background-color: v.$theme-dark;
+  text-transform: uppercase;
+  cursor: pointer;
+  @media (max-width: 500px) {
+    width: calc(80% + 20px);
+  }
+  &.login {
+    &:hover {
+      background-color: rgb(74, 74, 255);
+    }
+  }
+  &.google {
+    display: inline-flex;
+    font-size: 14px;
+    justify-content: center;
+    gap: 10px;
+    background-color: rgb(74, 74, 255);
+    &:hover {
+      background-color: rgba(74, 74, 255, 0.7);
+    }
+    p {
+      margin: auto 0px;
+      background-color: transparent;
+    }
+    svg {
+      margin: auto 0px;
+
+      background-color: transparent;
+    }
+  }
+}

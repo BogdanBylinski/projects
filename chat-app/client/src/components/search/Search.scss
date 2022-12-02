@@ -1,0 +1,9 @@
+.searchBox {
+  width: 100%;
+  button {
+    display: none;
+  }
+  & .ais-searchBox {
+    width: 100%;
+  }
+}

@@ -1,0 +1,54 @@
+.chat_container {
+  height: 100%;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  &.group {
+    grid-template-columns: 5fr 1fr;
+  }
+  &-messages {
+    & .messages {
+      overflow-y: auto;
+      height: 90%;
+    }
+    & .input_row {
+      height: 10%;
+      width: 100%;
+    }
+  }
+}
+.input_row {
+  border-top: 1px solid red;
+  .message_form {
+    display: flex;
+
+    height: 100%;
+    label {
+      display: none;
+    }
+    &-input {
+      padding: 20px 5px 20px 20px;
+      outline: none;
+      border: none;
+      height: 100%;
+      width: 90%;
+      //   word-break: break-word;
+      //   word-wrap: break-word;
+      overflow-wrap: break-word;
+      resize: none;
+      line-height: 22px;
+      font-size: 20px;
+    }
+    &-button {
+      width: 10%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      & button {
+        cursor: pointer;
+        border: none;
+        letter-spacing: 2px;
+      }
+    }
+  }
+}

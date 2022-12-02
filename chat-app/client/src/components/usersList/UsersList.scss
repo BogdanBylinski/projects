@@ -1,0 +1,11 @@
+.userList_container {
+  padding-top: 20px;
+  width: 100%;
+
+  &-item {
+    & img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

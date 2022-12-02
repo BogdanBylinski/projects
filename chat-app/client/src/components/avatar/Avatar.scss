@@ -1,0 +1,5 @@
+@use "../../variables/vars" as v;
+img {
+  width: v.$size;
+  height: v.$size;
+}
