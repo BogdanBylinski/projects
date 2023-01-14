@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet } from "react-native";
 
-import { fontSizes, spacing } from '../utils/sizes';
-import colors  from '../utils/colors';
+import { fontSizes, spacing } from "../utils/sizes";
+import colors from "../utils/colors";
 
 const minutesToMillis = (min) => min * 1000 * 60;
 const formatTime = (time) => (time < 10 ? `0${time}` : time);
@@ -10,9 +10,8 @@ export const Countdown = ({ minutes = 0.1, isPaused, onProgress, onEnd }) => {
   const interval = React.useRef(null);
 
   const [millis, setMillis] = useState(null);
-  const reset = () =>
-    setMillis(minutesToMillis(minutes))
-  
+  const reset = () => setMillis(minutesToMillis(minutes));
+
   const countDown = () => {
     setMillis((time) => {
       if (time === 0) {
@@ -38,7 +37,6 @@ export const Countdown = ({ minutes = 0.1, isPaused, onProgress, onEnd }) => {
       if (interval.current) clearInterval(interval.current);
       return;
     }
-
     interval.current = setInterval(countDown, 1000);
 
     return () => clearInterval(interval.current);
@@ -56,9 +54,9 @@ export const Countdown = ({ minutes = 0.1, isPaused, onProgress, onEnd }) => {
 const styles = StyleSheet.create({
   text: {
     fontSize: fontSizes.xxxl,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.white,
     padding: spacing.lg,
-    backgroundColor: colors.darkBlue
+    backgroundColor: colors.darkBlue,
   },
 });
