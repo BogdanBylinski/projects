@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
   const [photoURL, setPhotoURL] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [token, setToken] = useState(null);
+
   const value = {
     currentUser,
     setCurrentUser,
@@ -35,6 +36,8 @@ export const UserProvider = ({ children }) => {
     photoURL,
     currentChat,
     setCurrentChat,
+    token,
+    setToken,
   };
 
   useEffect(() => {

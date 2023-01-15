@@ -22,6 +22,7 @@ const allMessages = asyncHandler(async (req, res) => {
 //@route           POST /api/Message/
 //@access          Protected
 const sendMessage = asyncHandler(async (req, res) => {
+  console.log(req);
   const { content, chatId } = req.query;
 
   if (!content || !chatId) {
@@ -45,7 +46,7 @@ const sendMessage = asyncHandler(async (req, res) => {
       select: "displayName photoURL email",
     });
 
-    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    await Chat.findByIdAndUpdate(req.query.chatId, { latestMessage: message });
 
     res.json(message);
   } catch (error) {

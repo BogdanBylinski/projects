@@ -4,39 +4,72 @@ import { UserContext } from "../../contexts/user.context";
 import axios from "axios";
 import io from "socket.io-client";
 import Message from "../message/Message";
+import Typing from "../typing/Typing";
+import { ChatContext } from "../../contexts/chat.context";
 const ENDPOINT = "http://localhost:3333"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 let socket, selectedChatCompare;
-
 function CurrentChat() {
   const [inputValue, setInputValue] = useState("");
-  const { currentChat, currentUser, notification, setNotification } =
+  const { currentUser, currentChat, setCurrentChat, token, setToken } =
     useContext(UserContext);
-  const [token, setToken] = useState(null);
+  const {
+    setFetchAgain,
+
+    fetchAgain,
+  } = useContext(ChatContext);
+  const [newMessage, setNewMessage] = useState("");
+  // const [token, setToken] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
-  const [istyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [notification, setNotification] = useState([]);
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", currentUser);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
+    socket.on("disconnect", () => {
+      setCurrentChat(null);
+      console.log("disconnected");
+    });
 
     // eslint-disable-next-line
   }, []);
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     currentUser.getIdToken().then((token) => {
+  //       setToken(token);
+  //     });
+  //   }
+  // }, [currentUser]);
   useEffect(() => {
-    if (currentUser) {
+    localStorage.setItem("time", Date.now());
+    console.log("new token");
+  }, [token]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkTokenExpiration();
+    }, 1000 * 60);
+    return () => clearInterval(interval);
+  }, []);
+
+  const checkTokenExpiration = () => {
+    let expirationTime = localStorage.getItem("time");
+    if (Date.now() - expirationTime > 1800000) {
       currentUser.getIdToken().then((token) => {
         setToken(token);
       });
     }
-  }, [currentUser]);
+  };
 
   const sendMessage = async (event) => {
-    if (inputValue) {
-      console.log(currentChat);
+    checkTokenExpiration();
+    if (inputValue && event === "Enter") {
       socket.emit("stop typing", currentChat.uid);
       try {
         const config = {
@@ -56,6 +89,9 @@ function CurrentChat() {
           {},
           config
         );
+        if (data["message"] === "Bad token") {
+          return;
+        }
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -81,7 +117,6 @@ function CurrentChat() {
       );
       setMessages(data);
       setLoading(false);
-
       socket.emit("join chat", currentChat._id);
     } catch (error) {
       console.log(error);
@@ -89,27 +124,33 @@ function CurrentChat() {
   };
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentChat) {
+      currentUser.getIdToken().then((token) => {
+        setToken(token);
+      });
+      socket.emit("join chat", currentChat._id);
       fetchMessages();
     }
-
-    selectedChatCompare = currentChat;
-    // eslint-disable-next-line
   }, [currentChat]);
+  // eslint-disable-next-line
+  useEffect(() => {
+    if (currentChat) {
+      console.log(currentChat._id, "-asodkapsokdaposkdaposdaskpkd-");
+    }
+  }, [currentChat]);
+
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
-      console.log(newMessageRecieved);
       if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
-        selectedChatCompare._id !== newMessageRecieved.chat._id
+        !currentChat ||
+        currentChat._id !== newMessageRecieved.chat._id // if chat is not selected or doesn't match current chat
       ) {
-        if (!notification.includes(newMessageRecieved)) {
-          console.log("not");
-          setNotification([newMessageRecieved, ...notification]);
-          //   setFetchAgain(!fetchAgain);
-        }
-      } else {
+        console.log(123123123123);
+        return;
+      }
+      if (currentChat && currentChat._id === newMessageRecieved.chat._id) {
         console.log("newmessage received");
+        console.log(newMessageRecieved.chat._id === currentChat._id);
         setMessages([...messages, newMessageRecieved]);
       }
     });
@@ -118,39 +159,63 @@ function CurrentChat() {
     e.preventDefault();
 
     setInputValue("");
-    await sendMessage();
+    await sendMessage("Enter");
   };
   const submitFormWithEnter = (e) => {
     console.log(e.key);
   };
   const input = (e) => {
-    setInputValue(e);
+    console.log(e);
+    if (e.key === "Enter") {
+      return;
+    }
+    setInputValue(e.target.value);
+  };
+  const checkEnter = async (e) => {
+    if (e.key === "Enter" && !inputValue) {
+      e.preventDefault();
+    }
+    if (e.key === "Enter" && inputValue) {
+      e.preventDefault();
+      await sendMessage("Enter");
+    }
   };
   return (
     <div className="chat_container">
       {currentChat ? (
         <div className="chat_container-messages">
           <div className="messages">
-            {messages.length > 0 && currentChat
+            {messages.length > 0
               ? messages.map((m, i) => (
-                  <Message key={i} messages={messages} m={m} i={i}></Message>
+                  <Message
+                    key={i}
+                    messages={messages}
+                    // newMessage={newMessage}
+                    m={m}
+                    i={i}
+                  ></Message>
                 ))
               : ""}
           </div>
+          {/* {typing ? <Typing></Typing> : null} */}
           <div className="input_row">
             <form
               action="submit"
               onSubmit={submitForm}
+              onKeyPress={(e) => {
+                checkEnter(e);
+              }}
               className="message_form"
             >
               <label htmlFor="form-input"></label>
-              <input
+              <textarea
                 value={inputValue}
-                onChange={(e) => input(e.target.value)}
+                onChange={(e) => input(e)}
                 name="form-input"
                 type="textarea"
                 className="message_form-input"
-              />
+              ></textarea>
+
               <div className="message_form-button">
                 <button>SEND</button>
               </div>
@@ -158,7 +223,9 @@ function CurrentChat() {
           </div>
         </div>
       ) : (
-        ""
+        <div className="chat_container-noChat">
+          <p>Select a chat to start messaging</p>
+        </div>
       )}
       {/* <div className="chat_container_users"></div> */}
     </div>

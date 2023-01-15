@@ -25,35 +25,45 @@ function Home() {
   const setSearchOff = () => {
     setSearch(!search);
   };
+  if (!currentUser) {
+    return (
+      <>
+        <Outlet></Outlet>
+      </>
+    );
+  }
   return (
     <>
-      <div className="NavBar">
-        <div className="NavBar_left">
-          <div className="NavBar_left_item">
-            <Logo></Logo>
+      <div className="navLine">
+        <div className="NavBar">
+          <div className="NavBar_left">
+            <div className="NavBar_left_item">
+              <Logo></Logo>
+            </div>
+            <div className="NavBar_left_item">
+              {!currentUser ? (
+                ""
+              ) : (
+                <img onClick={setSearchOff} src={searchIcon} alt="search" />
+              )}
+            </div>
           </div>
-          <div className="NavBar_left_item">
-            {!currentUser ? (
-              ""
-            ) : (
-              <img onClick={setSearchOff} src={searchIcon} alt="search" />
-            )}
+          <div className="NavBar_center">
+            <div className="NavBar_center_item">
+              {!currentUser ? "" : <p>Messages</p>}
+            </div>
           </div>
-        </div>
-        <div className="NavBar_center">
-          <div className="NavBar_center_item">
-            {!currentUser ? "" : <p>Messages</p>}
-          </div>
-        </div>
-        <div className="NavBar_right">
-          <div className="NavBar_right_item">
-            {!currentUser ? <p>user</p> : <Avatar url={photoURL}></Avatar>}
-          </div>
-          <div className="NavBar_right_item">
-            {!currentUser ? "" : <p onClick={signOutUser}>Logout</p>}
+          <div className="NavBar_right">
+            <div className="NavBar_right_item">
+              {!currentUser ? <p>user</p> : <Avatar url={photoURL}></Avatar>}
+            </div>
+            <div className="NavBar_right_item">
+              {!currentUser ? "" : <p onClick={signOutUser}>Logout</p>}
+            </div>
           </div>
         </div>
       </div>
+
       <Outlet />
     </>
   );

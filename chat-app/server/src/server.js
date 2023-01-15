@@ -100,7 +100,8 @@ io.on("connection", (socket) => {
     socket.join(userData._id);
     socket.emit("connected");
   });
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (reason) => {
+    console.log(reason);
     console.log("user disconnected");
   });
   socket.on("join chat", (room) => {
@@ -115,13 +116,12 @@ io.on("connection", (socket) => {
 
   socket.on("new message", (newMessageRecieved) => {
     let chat = newMessageRecieved.chat;
-
-    if (!chat.users) return console.log("chat.users not defined");
+    console.log(chat);
+    if (!chat || !chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {
       if (user._id == newMessageRecieved.sender._id) return;
-
-      socket.to(chat._id).emit("message recieved", newMessageRecieved);
+      socket.in(chat._id).emit("message recieved", newMessageRecieved);
     });
   });
 

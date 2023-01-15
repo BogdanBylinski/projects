@@ -5,9 +5,16 @@
   max-height: 1024px;
   display: grid;
   grid-template-columns: 1fr 3fr;
+  border: 1px solid grey;
+  border-top: none;
   &-left {
-    background-color: red;
+    // background-color: red;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: visible;
+    border-right: 1px solid grey;
+  }
+  &-right {
+    max-height: 90vh;
   }
 }

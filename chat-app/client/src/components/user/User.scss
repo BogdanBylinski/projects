@@ -1,12 +1,43 @@
 .userList_container-item {
   display: flex;
+  position: relative;
   flex-direction: row;
   gap: 20px;
   padding: 10px;
-  background-color: grey;
-  margin: 10px 20px;
+  background-color: #e8e8e8;
+  // margin: 10px 20px;
   & p {
     font-size: 16px;
-    background-color: grey;
+    background-color: #e8e8e8;
+  }
+  transition: border-radius 0.23s ease-in-out;
+  &:hover {
+    img {
+      border-radius: 50px;
+    }
+  }
+}
+.userList_container-item {
+  &.currentChat {
+    // position: relative;
+    z-index: 1;
+
+    background-color: rgb(70, 156, 240);
+    & p {
+      font-size: 16px;
+      background-color: rgb(70, 156, 240);
+    }
+    &::after {
+      // position: absolute;
+      content: "";
+      width: 10px;
+      height: 70px;
+      border-color: red;
+      background-color: rgb(70, 156, 240);
+      z-index: 10;
+      right: -10px;
+      top: 0;
+      // transform: translate(50%, -50%);
+    }
   }
 }

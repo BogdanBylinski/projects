@@ -109,6 +109,7 @@
       height: 50px;
       &.choosed {
         img {
+          border-radius: 50px;
           border: 2px solid white;
         }
       }
@@ -118,7 +119,11 @@
         object-fit: cover;
         //   aspect-ratio: 1;
 
-        border-radius: 500px;
+        border-radius: 15px;
+        transition: border-radius 0.23s ease-in-out;
+        &:hover {
+          border-radius: 50px;
+        }
       }
     }
   }

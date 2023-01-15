@@ -3,22 +3,58 @@
   display: grid;
   width: 100%;
   grid-template-columns: 1fr;
+  overflow: auto;
+  min-height: 100%;
   &.group {
     grid-template-columns: 5fr 1fr;
   }
   &-messages {
+    // ::-webkit-scrollbar {
+    //   width: 3  px;
+    // }
+    // ::-webkit-scrollbar-button {
+    //   background: #ccc;
+    // }
+    // ::-webkit-scrollbar-track-piece {
+    //   // background: #888;
+    // }
+    // ::-webkit-scrollbar-thumb {
+    //   background: #eee;
+    // }
+
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+
     & .messages {
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: end;
       overflow-y: auto;
       height: 90%;
+      padding: 0 10px 10px 10px;
     }
     & .input_row {
       height: 10%;
       width: 100%;
     }
   }
+  &-noChat {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    // height: 10%;
+    align-self: center;
+    justify-self: center;
+    background-color: transparent;
+    p {
+      background-color: transparent;
+      word-spacing: 3px;
+    }
+  }
 }
 .input_row {
-  border-top: 1px solid red;
+  border-top: 1px solid grey;
   .message_form {
     display: flex;
 
