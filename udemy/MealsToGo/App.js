@@ -12,9 +12,8 @@ import { theme } from "./src/infrastructure/theme";
 import { Navigation } from "./src/infrastructure/navigation";
 
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
-
 const firebaseConfig = {
-  apiKey: process.env.KEY,
+  apiKey: process.env.REACT_APP_APPKEY,
   authDomain: "mealstogo-9b7c9.firebaseapp.com",
   projectId: "mealstogo-9b7c9",
   storageBucket: "mealstogo-9b7c9.appspot.com",
